@@ -3,25 +3,20 @@ import json
 import urllib.request
 
 def send_seatalk_reminder():
-    # Retrieve the secure webhook URL from GitHub Secrets
     webhook_url = os.environ.get("SEATALK_WEBHOOK_URL")
     if not webhook_url:
         print("Error: SEATALK_WEBHOOK_URL environment variable is missing.")
         return
 
-    # Construct the JSON text message payload required by SeaTalk
+    # Use a clean, universally accepted text payload structure
     payload = {
         "tag": "text",
         "text": {
-            "content": "⏰ Daily Reminder: Please update your task status boards and submit your daily logs! @all",
-            "at_all": True  # Pings everyone in the group chat
+            "content": "⏰ Reminder: This is your automated task board check-in!"
         }
     }
     
-    # Convert payload dictionary to encoded bytes
     data = json.dumps(payload).encode('utf-8')
-    
-    # Set headers and submit the POST request
     req = urllib.request.Request(
         webhook_url, 
         data=data, 
@@ -31,12 +26,16 @@ def send_seatalk_reminder():
     try:
         with urllib.request.urlopen(req) as response:
             status = response.getcode()
+            response_body = response.read().decode('utf-8')
+            
+            print(f"HTTP Status Code: {status}")
+            print(f"SeaTalk Server Response: {response_body}")
+            
+            # Most chat APIs return JSON response error codes here
             if status == 200:
-                print("Reminder pushed successfully to SeaTalk!")
-            else:
-                print(f"Failed to send. Server responded with status: {status}")
+                print("Webhook connection completed successfully.")
     except Exception as e:
-        print(f"An error occurred: {e}")
+        print(f"An execution error occurred: {e}")
 
 if __name__ == "__main__":
     send_seatalk_reminder()
