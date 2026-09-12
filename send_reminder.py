@@ -12,7 +12,7 @@ def send_seatalk_reminder():
     payload = {
         "tag": "text",
         "text": {
-            "content": "⏰ Reminder: This is your automated task board check-in!"
+            "content": "⏰ Reminder: absen coy"
         }
     }
     
