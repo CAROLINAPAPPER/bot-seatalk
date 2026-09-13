@@ -32,14 +32,13 @@ jobs:
       env:
         SEATALK_WEBHOOK_URL: ${{ secrets.SEATALK_WEBHOOK_URL }}
       run: |
-        # Cek apakah dipicu dari cron-job.org (repository_dispatch)
         if [ "${{ github.event_name }}" = "repository_dispatch" ]; then
           EVENT_TYPE="${{ github.event.action }}"
-          # Ambil karakter angka terakhir dari nama event (misal: trigger_reminder1 -> 1)
-          CHOICE="${EVENT_TYPE: -1}"
+          # Cara yang jauh lebih aman: Menghapus teks "trigger_reminder" dan hanya menyisakan angkanya saja
+          CHOICE="${EVENT_TYPE#trigger_reminder}"
         else
-          # Jika dipicu manual dari tombol GitHub Actions
           CHOICE="${{ github.event.inputs.reminder_choice }}"
         fi
         
+        echo "Menjalankan reminder nomor: $CHOICE"
         python send_reminder.py $CHOICE
