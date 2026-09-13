@@ -1,48 +1,45 @@
 name: Scheduled SeaTalk Reminder
 
 on:
-  schedule:
-    # Contoh trigger otomatis menggunakan UTC (02:00 UTC = 09:00 WIB)
-    # Ini akan menjalankan pilihan default jika dipicu oleh jadwal otomatis
-    - cron: '0 2 * * 1-5'
+  # Mendengarkan trigger eksternal dari cron-job.org
+  repository_dispatch:
+    types: [trigger_reminder1, trigger_reminder2, trigger_reminder3, trigger_reminder4]
   
-  # Fitur untuk menjalankan manual dengan pilihan masing-masing reminder
+  # Tetap mempertahankan fitur tombol manual di web GitHub
   workflow_dispatch:
     inputs:
       reminder_choice:
-        description: 'Pilih nomor reminder yang ingin dikirim:'
+        description: 'Pilih nomor:'
         required: true
         default: '1'
         type: choice
-        options:
-          - '1'
-          - '2'
-          - '3'
-          - '4'
+        options: ['1', '2', '3', '4']
 
 jobs:
   trigger-bot:
     runs-on: ubuntu-latest
 
     steps:
-    # 1. Menarik code dari repository GitHub Anda
     - name: Checkout Code
       uses: actions/checkout@v4
 
-    # 2. Setup environment Python 
     - name: Setup Python
       uses: actions/setup-python@v5
       with:
         python-version: '3.11'
 
-    # 3. Menjalankan script Python berdasarkan input manual atau jadwal otomatis
     - name: Run Reminder Script
       env:
         SEATALK_WEBHOOK_URL: ${{ secrets.SEATALK_WEBHOOK_URL }}
       run: |
-        # Jika dijalankan manual, gunakan input pilihan. Jika otomatis, default ke '1'.
-        CHOICE="${{ github.event.inputs.reminder_choice }}"
-        if [ -z "$CHOICE" ]; then
-          CHOICE="1"
+        # Cek apakah dipicu dari cron-job.org (repository_dispatch)
+        if [ "${{ github.event_name }}" = "repository_dispatch" ]; then
+          EVENT_TYPE="${{ github.event.action }}"
+          # Ambil karakter angka terakhir dari nama event (misal: trigger_reminder1 -> 1)
+          CHOICE="${EVENT_TYPE: -1}"
+        else
+          # Jika dipicu manual dari tombol GitHub Actions
+          CHOICE="${{ github.event.inputs.reminder_choice }}"
         fi
+        
         python send_reminder.py $CHOICE
