@@ -4,10 +4,12 @@ import sys
 import urllib.request
 
 def send_seatalk_message(webhook_url, content_text):
+    # Menambahkan parameter "at_all": True agar bot melakukan mention ke semua orang
     payload = {
         "tag": "text",
         "text": {
-            "content": content_text
+            "content": content_text,
+            "at_all": True
         }
     }
     
@@ -33,7 +35,7 @@ def main():
         print("Error: SEATALK_WEBHOOK_URL environment variable is missing.")
         return
 
-    # Validasi input argumen dari cronjob
+    # Validasi input argumen dari cronjob/GitHub Actions
     if len(sys.argv) < 2:
         print("Error: Harap masukkan argumen pesan (contoh: python send_reminder.py 1, 2, 3, atau 4)")
         return
