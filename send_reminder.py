@@ -12,7 +12,7 @@ def send_seatalk_reminder():
     payload = {
         "tag": "text",
         "text": {
-            "content": "⏰ isi content menyusul. tunggu yaaa"
+            "content": "Absen cuyy!! segera buat thread dan kirim SS yaa 👇"
         }
     }
     
