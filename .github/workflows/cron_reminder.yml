@@ -3,7 +3,7 @@ name: Scheduled SeaTalk Reminder
 on:
   # Mendengarkan trigger eksternal dari cron-job.org
   repository_dispatch:
-    types: [trigger_reminder1, trigger_reminder2, trigger_reminder3, trigger_reminder4]
+    types: [trigger_reminder1, trigger_reminder2, trigger_reminder3, trigger_reminder4, trigger_reminder5]
   
   # Tetap mempertahankan fitur tombol manual di web GitHub
   workflow_dispatch:
@@ -13,7 +13,7 @@ on:
         required: true
         default: '1'
         type: choice
-        options: ['1', '2', '3', '4']
+        options: ['1', '2', '3', '4', '5']
 
 jobs:
   trigger-bot:
