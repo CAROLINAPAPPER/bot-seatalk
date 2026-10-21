@@ -81,8 +81,8 @@ def main():
             "tiap kata HALO kalian tidak terbuang sia2 dan wajib jadi PTP/LM!!\n\n"
             "selalu ingat 🕵️\n"
             "- script 8.8\n"
-            "\"Dari spaylater penelponannya direkam, bersedia dihubungi "
-            "diluar jam kerja agar denda tidak makin membesar ya?\"\n"
+            "\"Dari spaylater penelponan direkam, mau dihubungi "
+            "diluar jam kerja agar denda tak nambah, PAK PRAPTO?\"\n"
             "jika menolak input CBL.\n"
             "jika jawaban user mau melakukan pembayaran berarti script 8.8 "
             "gugur langsung script tagihan.\n"
@@ -97,8 +97,8 @@ def main():
     elif pilihan == "5":
         pesan = (
             "🚨 saatnya script 8.8\n"
-            "\"Dari spaylater penelponannya direkam, bersedia dihubungi "
-            "diluar jam kerja agar denda tidak makin membesar ya?\""
+            "\"Dari spaylater penelponan direkam, mau dihubungi "
+            "diluar jam kerja agar denda tak nambah, PAK PRAPTO?\""
         )
         print("Memproses Reminder 5...")
         send_seatalk_message(webhook_url, pesan)
